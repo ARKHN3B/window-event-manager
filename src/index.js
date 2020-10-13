@@ -4,7 +4,7 @@
 class WindowEventManager {
   constructor(debug = false) {
     this._listeners = new Map();
-    this.debug = debug;
+    this.debug      = debug;
   }
 
   /**
@@ -54,13 +54,13 @@ class WindowEventManager {
       return;
     }
 
-    for (const { target, listener } of currentListenerDetailsForType) {
+    for (const {target, listener} of currentListenerDetailsForType) {
       target.removeEventListener(type, listener);
     }
 
     this._listeners.delete(type);
 
-    if (this.debug) console.debug(`All listeners for the type ${type} has been removed`)
+    if (this.debug) console.debug(`All listeners for the type ${type} has been removed`);
   }
 
   /**
@@ -78,7 +78,7 @@ class WindowEventManager {
       this.removeEventListenersByType(type, false);
     }
 
-    if (this.debug) console.debug(`All listeners for the following types: ${JSON.stringify(types)} has been removed`)
+    if (this.debug) console.debug(`All listeners for the following types: ${JSON.stringify(types)} has been removed`);
   }
 
   removeEventListenersByTarget(target, basicCheckProcess = true) {
@@ -88,7 +88,7 @@ class WindowEventManager {
     }
 
     for (const type of this._listeners.keys()) {
-      const details = this.getListenerDetailsByType(type);
+      const details        = this.getListenerDetailsByType(type);
       const updatedDetails = []; // Immutability
       details.forEach(value => {
         if (value.target === target) {
@@ -112,7 +112,10 @@ class WindowEventManager {
       this.removeEventListenersByTarget(target, false);
     }
 
-    if (this.debug) console.debug(`All listeners for the following targets: ${JSON.stringify(targets)} has been removed`)
+    if (this.debug) console.debug(`All listeners for the following targets: ${JSON.stringify(targets)} has been removed`);
   }
 }
-module.exports.WindowEventManager = new WindowEventManager();
+
+module.exports = {
+  WindowEventManager: new WindowEventManager(),
+};
