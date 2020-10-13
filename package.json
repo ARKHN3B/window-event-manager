@@ -1,10 +1,11 @@
 {
-  "name": "window-event-manager",
+  "name": "window-event-manager-source",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel index.js -d build"
   },
   "keywords": [],
   "author": "Ben Lmsc",
@@ -13,5 +14,10 @@
     "url": "https://github.com/ARKHN3B/window-event-manager.git"
   },
   "bugs": "https://github.com/ARKHN3B/window-event-manager/issues",
-  "license": "GNU General Public License v3.0"
+  "license": "GNU General Public License v3.0",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-minify": "^0.5.1"
+  }
 }

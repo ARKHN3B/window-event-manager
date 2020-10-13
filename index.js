@@ -115,3 +115,4 @@ class WindowEventManager {
     if (this.debug) console.debug(`All listeners for the following targets: ${JSON.stringify(targets)} has been removed`)
   }
 }
+module.exports.WindowEventManager = new WindowEventManager();
