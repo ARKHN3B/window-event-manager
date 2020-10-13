@@ -116,6 +116,4 @@ class WindowEventManager {
   }
 }
 
-module.exports = {
-  WindowEventManager: new WindowEventManager(),
-};
+module.exports.WindowEventManager = new WindowEventManager();
