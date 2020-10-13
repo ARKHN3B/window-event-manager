@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src/index.js -d build"
+    "pre-build": "babel src/index.js -d build",
+    "uglify": "uglifyjs -c -o export/index.js -- build/src/index.js",
+    "build": "npm run pre-build && npm run uglify"
   },
   "keywords": [],
   "author": "Ben Lmsc",
@@ -18,6 +20,6 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-minify": "^0.5.1"
+    "uglify-js": "^3.11.2"
   }
 }

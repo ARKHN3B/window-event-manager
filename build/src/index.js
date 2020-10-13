@@ -1,1 +1,222 @@
-"use strict";var _createClass=function(){function a(a,b){for(var c,d=0;d<b.length;d++)c=b[d],c.enumerable=c.enumerable||!1,c.configurable=!0,"value"in c&&(c.writable=!0),Object.defineProperty(a,c.key,c)}return function(b,c,d){return c&&a(b.prototype,c),d&&a(b,d),b}}();function _toConsumableArray(a){if(Array.isArray(a)){for(var b=0,c=Array(a.length);b<a.length;b++)c[b]=a[b];return c}return Array.from(a)}function _classCallCheck(a,b){if(!(a instanceof b))throw new TypeError("Cannot call a class as a function")}var WindowEventManager=function(){function a(){var b=!!(0<arguments.length&&void 0!==arguments[0])&&arguments[0];_classCallCheck(this,a),this._listeners=new Map,this.debug=b}return _createClass(a,[{key:"getListenerDetailsByType",value:function b(a){return this._listeners.get(a)}},{key:"addEventListener",value:function e(){var a=0<arguments.length&&void 0!==arguments[0]?arguments[0]:window,b=arguments[1],c=arguments[2],d=[{target:a,listener:c}];if(this._listeners.size){var f=this.getListenerDetailsByType(b);Array.isArray(f)&&f.length&&(d=[].concat(_toConsumableArray(d),_toConsumableArray(f)))}this._listeners.set(b,d),a.addEventListener(b,c),this.debug&&console.debug("The event listener for the type: "+b+" has been added for the target: "+a)}},{key:"removeEventListenersByType",value:function l(a){var b=!(1<arguments.length&&void 0!==arguments[1])||arguments[1];if(b&&!this._listeners.size)return void console.warn("No listener saved");var c=this.getListenerDetailsByType(a);if(!Array.isArray(c)||!c.length)return void console.warn("No listener saved for the type "+a);var d=!0,e=!1,f=void 0;try{for(var g,h=c[Symbol.iterator]();!(d=(g=h.next()).done);d=!0){var i=g.value,j=i.target,k=i.listener;j.removeEventListener(a,k)}}catch(a){e=!0,f=a}finally{try{!d&&h.return&&h.return()}finally{if(e)throw f}}this._listeners.delete(a),this.debug&&console.debug("All listeners for the type "+a+" has been removed")}},{key:"removeEventListenersByTypes",value:function h(){var a=0<arguments.length&&void 0!==arguments[0]?arguments[0]:[];if(!this._listeners.size)return void console.warn("No listener saved");var b=!0,c=!1,d=void 0;try{for(var e,f,g=a[Symbol.iterator]();!(b=(e=g.next()).done);b=!0)f=e.value,this.removeEventListenersByType(f,!1)}catch(a){c=!0,d=a}finally{try{!b&&g.return&&g.return()}finally{if(c)throw d}}this.debug&&console.debug("All listeners for the following types: "+JSON.stringify(a)+" has been removed")}},{key:"removeEventListenersByTarget",value:function k(a){var b=this,c=!(1<arguments.length&&void 0!==arguments[1])||arguments[1];if(c&&!this._listeners.size)return void console.warn("No listener saved");var d=function(c){var d=b.getListenerDetailsByType(c),e=[];d.forEach(function(b){b.target===a?b.target.removeEventListener(c,b.listener):e.push(b)}),e.length&&b._listeners.set(c,e)},e=!0,f=!1,g=void 0;try{for(var h,c,j=this._listeners.keys()[Symbol.iterator]();!(e=(h=j.next()).done);e=!0)i=h.value,d(c)}catch(a){f=!0,g=a}finally{try{!e&&j.return&&j.return()}finally{if(f)throw g}}}},{key:"removeEventListenersByTargets",value:function h(){var a=0<arguments.length&&void 0!==arguments[0]?arguments[0]:[];if(!this._listeners.size)return void console.warn("No listener saved");var b=!0,c=!1,d=void 0;try{for(var e,f,g=a[Symbol.iterator]();!(b=(e=g.next()).done);b=!0)f=e.value,this.removeEventListenersByTarget(f,!1)}catch(a){c=!0,d=a}finally{try{!b&&g.return&&g.return()}finally{if(c)throw d}}this.debug&&console.debug("All listeners for the following targets: "+JSON.stringify(a)+" has been removed")}}]),a}();module.exports={WindowEventManager:new WindowEventManager};
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var WindowEventManager = function () {
+  function WindowEventManager() {
+    var debug = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+    _classCallCheck(this, WindowEventManager);
+
+    this._listeners = new Map();
+    this.debug = debug;
+  }
+
+  _createClass(WindowEventManager, [{
+    key: "getListenerDetailsByType",
+    value: function getListenerDetailsByType(type) {
+      return this._listeners.get(type);
+    }
+  }, {
+    key: "addEventListener",
+    value: function addEventListener() {
+      var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : window;
+      var type = arguments[1];
+      var listener = arguments[2];
+
+      var details = [{ target: target, listener: listener }];
+      if (this._listeners.size) {
+        var currentListenerDetailsForType = this.getListenerDetailsByType(type);
+        if (Array.isArray(currentListenerDetailsForType) && currentListenerDetailsForType.length) {
+          details = [].concat(_toConsumableArray(details), _toConsumableArray(currentListenerDetailsForType));
+        }
+      }
+      this._listeners.set(type, details);
+      target.addEventListener(type, listener);
+
+      if (this.debug) console.debug("The event listener for the type: " + type + " has been added for the target: " + target);
+    }
+  }, {
+    key: "removeEventListenersByType",
+    value: function removeEventListenersByType(type) {
+      var basicCheckProcess = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      if (basicCheckProcess && !this._listeners.size) {
+        console.warn("No listener saved");
+        return;
+      }
+
+      var currentListenerDetailsForType = this.getListenerDetailsByType(type);
+
+      if (!Array.isArray(currentListenerDetailsForType) || !currentListenerDetailsForType.length) {
+        console.warn("No listener saved for the type " + type);
+        return;
+      }
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = currentListenerDetailsForType[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var _ref = _step.value;
+          var target = _ref.target;
+          var listener = _ref.listener;
+
+          target.removeEventListener(type, listener);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      this._listeners.delete(type);
+
+      if (this.debug) console.debug("All listeners for the type " + type + " has been removed");
+    }
+  }, {
+    key: "removeEventListenersByTypes",
+    value: function removeEventListenersByTypes() {
+      var types = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+      if (!this._listeners.size) {
+        console.warn("No listener saved");
+        return;
+      }
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = types[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var type = _step2.value;
+
+          this.removeEventListenersByType(type, false);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      if (this.debug) console.debug("All listeners for the following types: " + JSON.stringify(types) + " has been removed");
+    }
+  }, {
+    key: "removeEventListenersByTarget",
+    value: function removeEventListenersByTarget(target) {
+      var _this = this;
+
+      var basicCheckProcess = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      if (basicCheckProcess && !this._listeners.size) {
+        console.warn("No listener saved");
+        return;
+      }
+
+      var _loop = function _loop(type) {
+        var details = _this.getListenerDetailsByType(type);
+        var updatedDetails = [];
+        details.forEach(function (value) {
+          if (value.target === target) {
+            value.target.removeEventListener(type, value.listener);
+          } else {
+            updatedDetails.push(value);
+          }
+        });
+        if (updatedDetails.length) _this._listeners.set(type, updatedDetails);
+      };
+
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = this._listeners.keys()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var type = _step3.value;
+
+          _loop(type);
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+    }
+  }, {
+    key: "removeEventListenersByTargets",
+    value: function removeEventListenersByTargets() {
+      var targets = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+      if (!this._listeners.size) {
+        console.warn("No listener saved");
+        return;
+      }
+
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = targets[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var target = _step4.value;
+
+          this.removeEventListenersByTarget(target, false);
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+
+      if (this.debug) console.debug("All listeners for the following targets: " + JSON.stringify(targets) + " has been removed");
+    }
+  }]);
+
+  return WindowEventManager;
+}();
+
+module.exports = {
+  WindowEventManager: new WindowEventManager()
+};

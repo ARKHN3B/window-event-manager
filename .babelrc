@@ -1,4 +1,6 @@
 {
-  "presets": ["env", "minify"],
+  "presets": [
+    "env"
+  ],
   "comments": false
 }
