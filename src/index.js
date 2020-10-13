@@ -55,7 +55,7 @@ class WindowEventManager {
     }
 
     for (const { target, listener } of currentListenerDetailsForType) {
-      target.removeEventListener(listener);
+      target.removeEventListener(type, listener);
     }
 
     this._listeners.delete(type);
@@ -92,7 +92,7 @@ class WindowEventManager {
       const updatedDetails = []; // Immutability
       details.forEach(value => {
         if (value.target === target) {
-          value.target.removeEventListener(value.listener);
+          value.target.removeEventListener(type, value.listener);
         }
         else {
           updatedDetails.push(value);
