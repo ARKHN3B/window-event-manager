@@ -1,11 +1,11 @@
 {
-  "name": "window-event-manager-source",
+  "name": "window-event-manager-sources",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Sources related to the package window event manager",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel index.js -d build"
+    "build": "babel src/index.js -d build"
   },
   "keywords": [],
   "author": "Ben Lmsc",
